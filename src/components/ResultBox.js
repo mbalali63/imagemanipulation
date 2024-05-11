@@ -36,8 +36,8 @@ export default function ResultBox({isMobile,functionMode,processStage}) {
             }
         :
             {
+                display: processStage === 'result' ? 'flex' : 'none',
                 gridColumn: '1/3',
-                display : 'flex',
                 flexDirection: 'row',
                 justifyContent: 'space-around',
                 gap:'10px',

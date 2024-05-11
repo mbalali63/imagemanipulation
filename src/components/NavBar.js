@@ -1,6 +1,7 @@
 import {mb_L_M,mb_R_M} from './../colors.js'
 import {mb_L_D,mb_R_D} from './../colors.js'
 import {mhl_L_D,mhl_R_D} from './../colors.js'
+import {mhl_L_M,mhl_R_M} from './../colors.js'
 
 export default function NavBar({isMobile,isHamburgerOpen,functionMode,refTarget}) {
     const navBarSectionStyle = isMobile 
@@ -46,15 +47,19 @@ export default function NavBar({isMobile,isHamburgerOpen,functionMode,refTarget}
                     gap:'30px'
                 };
 
-    const navBarMenuItemStyle = isMobile
+    const navBarMenuItemStyle = (highlight) => {
+            return isMobile
             ?
                 {
                     padding: '16px 0',
+                    fontWeight: highlight && 'bold'
                 }
             :
                 {
-                    padding:'20px 10px',
+                    padding: '20px 10px',
+                    fontWeight: highlight && 'bold'
                 };
+            }
     
     const highlightMenuItem = (e) => {
         const fontColor = isMobile ? '#000' : '#000';
@@ -74,7 +79,7 @@ export default function NavBar({isMobile,isHamburgerOpen,functionMode,refTarget}
         return <li 
             key={index}
             className='nav-bar-menu-item'
-            style={navBarMenuItemStyle}
+            style={navBarMenuItemStyle(functionMode === item.toLocaleLowerCase())}
             onMouseEnter={highlightMenuItem}
             onMouseLeave={deHighlightMenuItem}
         >

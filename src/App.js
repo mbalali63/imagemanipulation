@@ -9,7 +9,7 @@ function App() {
   const [isHamburgerOpen,setIsHamburgerOpen] = useState(false);
   const [functionMode,setFunctionMode] = useState('resize');    //resize; rotate; format; filter; background; crop
   const isMobile = useMediaQuery({query: '(max-width:400px)'});
-  const [processStage,setProcessStage] = useState('result');  //initialize, getData, result
+  const [processStage,setProcessStage] = useState('initialize');  //initialize, getData, result
   const [newSize,setNewSize] = useState([0,0]);
   const refTarget = useRef(null);
 

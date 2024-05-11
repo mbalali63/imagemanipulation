@@ -19,7 +19,6 @@ export default function Footer({isMobile}) {
             textAlign: 'center',
             padding: '15px 0'
         }
-    console.log(footerSectionStyle)
     return (
         <section className="footer-section" style={footerSectionStyle}>
             <p >Designed by <a href="#">Mahdi Balali</a></p>

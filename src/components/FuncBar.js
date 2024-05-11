@@ -44,7 +44,7 @@ export default function FuncBar({isMobile, functionMode, processStage}) {
                 justifyItems:'center'
             }
     return (
-        <section class="function-bar-section" style = {functionBarSectionStyle}>
+        <section className="function-bar-section" style = {functionBarSectionStyle}>
             <h2 style = {h2Style}>{functionTitle.caption}</h2>
             <UploadBar isMobile = {isMobile} functionMode = {functionMode} processStage = {processStage} />
             <SizeInputBox isMobile = {isMobile} functionMode = {functionMode} processStage = {processStage} />
