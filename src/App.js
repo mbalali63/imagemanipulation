@@ -1,23 +1,44 @@
-import logo from './logo.svg';
-import './App.css';
+import { useState, useRef, useEffect} from 'react';
+import Header from './components/Header';
+import NavBar from './components/NavBar';
+import FuncBar from './components/FuncBar';
+import { useMediaQuery } from 'react-responsive';
+import Footer from './components/Footer';
 
 function App() {
+  const [isHamburgerOpen,setIsHamburgerOpen] = useState(false);
+  const [functionMode,setFunctionMode] = useState('resize');    //resize; rotate; format; filter; background; crop
+  const isMobile = useMediaQuery({query: '(max-width:400px)'});
+  const [processStage,setProcessStage] = useState('result');  //initialize, getData, result
+  const [newSize,setNewSize] = useState([0,0]);
+  const refTarget = useRef(null);
+
+  useEffect( () => {
+    document.getElementById('hamburger').addEventListener('click', hamburgerClickHandler)
+    window.addEventListener('mousedown',handleOutMenuClick);
+    return () => {
+      document.getElementById('hamburger').removeEventListener('close',hamburgerClickHandler)
+      window.removeEventListener('mousedown',handleOutMenuClick);
+    }
+  },[])
+
+  const hamburgerClickHandler = () => {
+    setIsHamburgerOpen(!isHamburgerOpen);
+  }
+
+  const handleOutMenuClick = (event) => {
+    if (!refTarget.current?.contains(event.target)) 
+    {
+      setIsHamburgerOpen(false);
+    }
+  }
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Header isMobile = {isMobile} isHamburgerOpen = {isHamburgerOpen} functionMode = {functionMode} />
+      <NavBar isMobile = {isMobile} isHamburgerOpen = {isHamburgerOpen} functionMode = {functionMode} refTarget={refTarget} />
+      <FuncBar isMobile = {isMobile} functionMode = {functionMode} processStage={processStage} newSize={newSize}/>
+      <Footer isMobile = {isMobile} />
     </div>
   );
 }
