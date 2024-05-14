@@ -4,8 +4,12 @@ import {fcb_L_D,fcb_R_D} from './../colors.js'
 import {fcb_L_M,fcb_R_M} from './../colors.js'
 import { useState } from 'react'
 
+
 export default function UploadBar({isMobile,functionMode,processStage}) {
     const [selectedFile,setSelectedFile] = useState(null);
+    const [reservedText,setReservedText] = useState('No');
+
+    
     const uploadBarSectionStyle = isMobile 
         ?
             { 
@@ -15,7 +19,7 @@ export default function UploadBar({isMobile,functionMode,processStage}) {
                 justifyContent: 'space-between',
                 gap:'50px',
                 width: '80%',
-                background: `linear-gradient(to bottom, ${fcbb_L_D}, ${fcbb_R_D}`,
+                background: `linear-gradient(to bottom, ${fcbb_L_D}, ${fcbb_R_D})`,
                 color:'#fff',
                 padding:'30px 0',
             }
@@ -47,7 +51,7 @@ export default function UploadBar({isMobile,functionMode,processStage}) {
                 width: '60%',
                 display:'flex',
                 flexDirection: 'column',
-                alignItems: 'cener',
+                alignItems: 'center',
                 justifyContent: 'space-between',
                 gap:'20px'
             }
@@ -125,25 +129,64 @@ export default function UploadBar({isMobile,functionMode,processStage}) {
             {
                 display: 'block'
             }
-        
+    const handleSubmitFormAjax = (event) => {
+        event.preventDefault();
+        const xhttp = XMLHttpRequest();
+        xhttp.onreadystatechange = function() {
+            if (this.readyState === 4 && this.status === 200) {
+                console.log('HHH')
+                setReservedText(this.responseText);
+            }
+        }
+        xhttp.open("POST","AA",true);
+        xhttp.send();
+    }
+
+    const handleSubmitForm = (event) => {
+        setReservedText('JJJ');
+
+        if (!event.target.files[0]) return;
+        const formData = new FormData();
+        formData.append('imageFile',event.target.files[0]);
+
+        try {
+            const response = fetch('/api/imageupload', {
+                method: 'POST',
+                body: formData,
+            })
+            response.then((result) => {
+                if (result.ok) {
+                    setReservedText('OK');
+                } else {
+                    setReservedText('NOK');
+                }
+            })
+        } catch (err) {
+            console.log('File Upload Failed.');
+        } 
+    }
+    
+
+
     return (
         <section className="upload-bar-section" style = {uploadBarSectionStyle}>            
         <div className = "file-input-container" >
-            <input 
-                type = 'file' 
-                id='file' 
-                className='file' 
-                style = {fileInputStyle} 
-                onChange={
-                    (e) => {
-                        const [file] = e.target.files;
-                        console.log(file)
-                        setSelectedFile(file)
-                    }
-                }/>
-            <label for='file' style = {fileInputLabelStyle}>
-                Upload Image                
+
+            <input
+                type = 'file'
+                id='file1'
+                name = 'imageFile'
+                className='file'
+                style = {fileInputStyle}
+                onChange = {(e) => {
+                    setSelectedFile(e.target.files[0])
+                    handleSubmitForm(e)
+                }}
+            />
+            <label htmlFor='file1' style = {fileInputLabelStyle}>
+                Upload Image
             </label>
+
         </div>
 
             <div className="image-prop-container" style = {imagePropContainerStyle}>                
@@ -152,7 +195,7 @@ export default function UploadBar({isMobile,functionMode,processStage}) {
                 <p style = {imagePropsStyle}>Image Size 300x200</p>
             </div>
             <p style = {pStyle}>
-                Press Enter or Convert Button to reize <br/>
+                Press Enter or Convert Button to reize <br/> {reservedText}
             </p>
         </section>
     )

@@ -41,7 +41,8 @@ export default function FuncBar({isMobile, functionMode, processStage}) {
                 width: '80%',
                 display: 'grid',
                 gridTemplateColumns: 'repeat(2,1fr)',
-                justifyItems:'center'
+                justifyItems:'center',
+                marginBottom:'80px'
             }
     return (
         <section className="function-bar-section" style = {functionBarSectionStyle}>
