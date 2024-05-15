@@ -3,7 +3,7 @@ import {mb_L_D,mb_R_D} from './../colors.js'
 import {mhl_L_D,mhl_R_D} from './../colors.js'
 import {mhl_L_M,mhl_R_M} from './../colors.js'
 
-export default function NavBar({isMobile,isHamburgerOpen,functionMode,refTarget}) {
+export default function NavBar({isMobile,isHamburgerOpen,hamburgerClickHandler, functionMode, handleFunctionMode,refTarget}) {
     const navBarSectionStyle = isMobile 
             ? 
                 {
@@ -11,12 +11,13 @@ export default function NavBar({isMobile,isHamburgerOpen,functionMode,refTarget}
                     background: `linear-gradient(to right,${mb_L_M},${mb_R_M}`,
                     color:'#fff',
                     position:'fixed',
-                    paddingTop:'20%'
+                    paddingTop: isHamburgerOpen ? '20%': '0',
+                    zIndex: 100
                 }
             : 
                 {
-                    background: `linear-gradient(to right,${mb_L_D},${mb_R_D}`,
-                    width: '75%',
+                    background: `linear-gradient(to right,${mb_L_D},${mb_R_D}`,                    
+                    width: '100%',
                     backgroundColor:'#fff',
                 };
     const hamburgerStyle = isMobile 
@@ -29,6 +30,15 @@ export default function NavBar({isMobile,isHamburgerOpen,functionMode,refTarget}
                 {
                     display: 'none'
                 }
+    const hamburgerIconStyle = isHamburgerOpen
+            ?
+                {
+                    color: '#fff'
+                }
+            :
+                {
+                    color: '#000'
+                }
     const navBarMenuStyle = isMobile
             ? 
                 {
@@ -36,15 +46,17 @@ export default function NavBar({isMobile,isHamburgerOpen,functionMode,refTarget}
                     flexDirection: 'column',
                     alignItems: 'center',
                     gap:'20px',
-                    display: isHamburgerOpen ? 'flex' : 'none'
+                    display: isHamburgerOpen ? 'flex' : 'none',
+                    zIndex:100
                 }
             :
                 {
-                    fontSize: '30px',
+                    fontSize: '20px',
                     flexDirection: 'row',
                     alignItems: 'center',
                     justifyContent:'center',
-                    gap:'30px'
+                    gap:'30px',
+                    cursor: 'pointer'
                 };
 
     const navBarMenuItemStyle = (highlight) => {
@@ -52,7 +64,8 @@ export default function NavBar({isMobile,isHamburgerOpen,functionMode,refTarget}
             ?
                 {
                     padding: '16px 0',
-                    fontWeight: highlight && 'bold'
+                    fontWeight: highlight && 'bold',
+                    zIndex:100
                 }
             :
                 {
@@ -82,6 +95,11 @@ export default function NavBar({isMobile,isHamburgerOpen,functionMode,refTarget}
             style={navBarMenuItemStyle(functionMode === item.toLocaleLowerCase())}
             onMouseEnter={highlightMenuItem}
             onMouseLeave={deHighlightMenuItem}
+            onClick={ (e) => {
+                handleFunctionMode(item.toLocaleLowerCase());
+                hamburgerClickHandler()                
+            }
+            }
         >
             {item}
         </li>
@@ -89,7 +107,7 @@ export default function NavBar({isMobile,isHamburgerOpen,functionMode,refTarget}
     return (
         <section className = 'nav-bar-section' style={navBarSectionStyle}>
             <div className = 'hamburger-image-container' id = "hamburger" style = {hamburgerStyle}>
-                <span className="material-symbols-outlined">menu</span>
+                <span className="material-symbols-outlined" style = {hamburgerIconStyle}>menu</span>
             </div>            
             <ul className='nav-bar-menu' style = {navBarMenuStyle} ref={refTarget} >
                 {menuItems}

@@ -5,8 +5,8 @@ import {fcb_L_M,fcb_R_M} from './../colors.js'
 import { useState } from 'react'
 
 
-export default function UploadBar({isMobile,functionMode,processStage}) {
-    const [selectedFile,setSelectedFile] = useState(null);
+export default function UploadBar({isMobile,functionMode,selectedFile, handleSelectedFile,processStage,processHandler}) {
+    
     const [reservedText,setReservedText] = useState('No');
 
     
@@ -82,7 +82,7 @@ export default function UploadBar({isMobile,functionMode,processStage}) {
                 cursor: 'pointer',
                 padding: '20px 30px',
                 margin: '0 auto',
-                fontSize: '14px'
+                fontSize: '14px'                
             }
         :
             {
@@ -117,7 +117,7 @@ export default function UploadBar({isMobile,functionMode,processStage}) {
             }
         :
             {
-                fontSize:'20px',
+                fontSize:'16px',
                 width: '100%',
             }
     const pStyle = isMobile
@@ -129,23 +129,11 @@ export default function UploadBar({isMobile,functionMode,processStage}) {
             {
                 display: 'block'
             }
-    const handleSubmitFormAjax = (event) => {
-        event.preventDefault();
-        const xhttp = XMLHttpRequest();
-        xhttp.onreadystatechange = function() {
-            if (this.readyState === 4 && this.status === 200) {
-                console.log('HHH')
-                setReservedText(this.responseText);
-            }
-        }
-        xhttp.open("POST","AA",true);
-        xhttp.send();
-    }
 
     const handleSubmitForm = (event) => {
-        setReservedText('JJJ');
 
         if (!event.target.files[0]) return;
+        handleSelectedFile(event.target.files[0]);
         const formData = new FormData();
         formData.append('imageFile',event.target.files[0]);
 
@@ -156,7 +144,7 @@ export default function UploadBar({isMobile,functionMode,processStage}) {
             })
             response.then((result) => {
                 if (result.ok) {
-                    setReservedText('OK');
+                    processHandler();
                 } else {
                     setReservedText('NOK');
                 }
@@ -164,6 +152,7 @@ export default function UploadBar({isMobile,functionMode,processStage}) {
         } catch (err) {
             console.log('File Upload Failed.');
         } 
+
     }
     
 
@@ -178,8 +167,7 @@ export default function UploadBar({isMobile,functionMode,processStage}) {
                 name = 'imageFile'
                 className='file'
                 style = {fileInputStyle}
-                onChange = {(e) => {
-                    setSelectedFile(e.target.files[0])
+                onChange = {(e) => {                    
                     handleSubmitForm(e)
                 }}
             />

@@ -2,7 +2,19 @@ import UploadBar from "./UploadBar"
 import SizeInputBox from "./SizeInputBox"
 import ResultBox from "./ResultBox"
 
-export default function FuncBar({isMobile, functionMode, processStage}) {
+export default function FuncBar({isMobile, 
+                                 functionMode,
+                                 selectedFile,
+                                 handleSelectedFile,
+                                 processStage,
+                                 processHandler,
+                                 processStageDefine,
+                                 newSize,
+                                 handleNewSize,
+                                 resultLink,
+                                 updateResultLink
+                                })
+{
     const functionTitlesList = [{name:'resize', caption: 'Image Resize'},
                                 {name:'rotate', caption: 'Image Rotate'},
                                 {name:'format', caption: 'Image Format Change'},
@@ -14,9 +26,11 @@ export default function FuncBar({isMobile, functionMode, processStage}) {
     const h2Style = isMobile 
         ?  
             {
+                fontSize: '20px',
                 fontWeight: '400',
                 alignSelf: 'start',
-                marginLeft: '60px'
+                marginLeft: '60px',
+                marginTop: '10px'
             }
         :
             {
@@ -47,9 +61,32 @@ export default function FuncBar({isMobile, functionMode, processStage}) {
     return (
         <section className="function-bar-section" style = {functionBarSectionStyle}>
             <h2 style = {h2Style}>{functionTitle.caption}</h2>
-            <UploadBar isMobile = {isMobile} functionMode = {functionMode} processStage = {processStage} />
-            <SizeInputBox isMobile = {isMobile} functionMode = {functionMode} processStage = {processStage} />
-            <ResultBox isMobile = {isMobile} functionMode = {functionMode} processStage = {processStage} />
+            <UploadBar 
+                    isMobile = {isMobile} 
+                    functionMode = {functionMode} 
+                    selectedFile = {selectedFile} 
+                    handleSelectedFile = {handleSelectedFile} 
+                    processStage = {processStage} 
+                    processHandler = {processHandler} 
+            />
+            <SizeInputBox 
+                    isMobile = {isMobile} 
+                    functionMode = {functionMode} 
+                    selectedFile = {selectedFile} 
+                    processStage = {processStage} 
+                    processHandler = {processHandler} 
+                    processStageDefine = {processStageDefine}
+                    newSize = {newSize}
+                    handleNewSize = {handleNewSize}
+                    resultLink = {resultLink}
+                    updateResultLink = {updateResultLink}
+            />
+            <ResultBox 
+                    isMobile = {isMobile} 
+                    functionMode = {functionMode} 
+                    processStage = {processStage}
+                    resultLink = {resultLink}
+            />
         </section>
     )
 }

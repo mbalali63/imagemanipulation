@@ -2,7 +2,12 @@ import {dsb_L_D,dsb_R_D} from './../colors.js'
 import {dsb_L_M,dsb_R_M} from './../colors.js'
 import {fcbb_L_M,fcbb_R_M} from './../colors.js'
 
-export default function ResultBox({isMobile,functionMode,processStage}) {
+export default function ResultBox({isMobile,
+                                   functionMode,
+                                   processStage,
+                                   resultLink
+                                  })
+{
     const successResultCaptionsList = [{name:'resize', caption: 'Image Resized'},
             {name:'rotate', caption: 'Image Rotated'},
             {name:'format', caption: 'Image Format Changed'},
@@ -77,11 +82,16 @@ export default function ResultBox({isMobile,functionMode,processStage}) {
                 background: `linear-gradient(to bottom, ${dsb_L_D}, ${dsb_R_D})`,
                 color: '#fff'
             }
+            
+    const handleDownloadResult = () => {
+        window.open(`http://127.0.0.1:4000/api/downloadResult/?filename=${resultLink}`);
+    }
+
     return (
         <section className="result-box-section" style = {resultBoxSectionStyle}>
             <h2 style = {h2Style}>{successResultCaption.caption}</h2>
             <div className="buttons-container" style={buttonsContainerStyle}>
-                <button className="result-button" style = {resultButtonStyle} >Download</button>
+                <button className="result-button" style = {resultButtonStyle} onClick={handleDownloadResult}> Download </button>
                 <button className="result-button" style = {resultButtonStyle} >Share</button>
             </div>
         </section>

@@ -8,8 +8,8 @@ export default function Footer({isMobile}) {
             background: `linear-gradient(to right, ${fb_L_D}, ${fb_R_D}`,
             color:'#fff',
             textAlign: 'center',
-            padding: '10px 0',
-            fontSize: '13px'
+            padding: '6px 0',
+            fontSize: '11px'
         }
     :
         {
