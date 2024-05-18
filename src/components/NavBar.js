@@ -87,7 +87,7 @@ export default function NavBar({isMobile,isHamburgerOpen,hamburgerClickHandler, 
         e.target.style.background = `linear-gradient(${colorDirection}, ${colorLeft},${colorRight})`;
         e.target.style.color = fontColor;
     }
-    const menuItemLabels = ['Resize','Rotate','Format','Filter','Background','Crop'];
+    const menuItemLabels = ['Resize','Rotate','Format','Filter']//,'Background','Crop'];
     const menuItems = menuItemLabels.map((item,index) => {
         return <li 
             key={index}

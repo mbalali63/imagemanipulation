@@ -1,6 +1,8 @@
 import {dsb_L_D,dsb_R_D} from './../colors.js'
 import {dsb_L_M,dsb_R_M} from './../colors.js'
 import {fcbb_L_M,fcbb_R_M} from './../colors.js'
+import ShareBox from './ShareBox.js'
+import { useState } from 'react'
 
 export default function ResultBox({isMobile,
                                    functionMode,
@@ -8,6 +10,7 @@ export default function ResultBox({isMobile,
                                    resultLink
                                   })
 {
+
     const successResultCaptionsList = [{name:'resize', caption: 'Image Resized'},
             {name:'rotate', caption: 'Image Rotated'},
             {name:'format', caption: 'Image Format Changed'},
@@ -24,7 +27,8 @@ export default function ResultBox({isMobile,
             }
         :
             {
-                fontSize: '40px'
+                fontSize: '30px',
+                textAlign: 'center'
             }
     const resultBoxSectionStyle = isMobile 
         ?
@@ -41,12 +45,13 @@ export default function ResultBox({isMobile,
             }
         :
             {
-                display: processStage === 'result' ? 'flex' : 'none',
                 gridColumn: '1/3',
-                flexDirection: 'row',
+                display: processStage === 'result' ? 'flex' : 'none',                
+                flexDirection: 'column',
+                alignItems: 'center',
                 justifyContent: 'space-around',
                 gap:'10px',
-                width: '80%',
+                width: '20%',
                 paddingTop: '50px',
                 backgroundColor:'transparent',
             }
@@ -65,7 +70,7 @@ export default function ResultBox({isMobile,
                 flexDirection: 'row',
                 alignItems: 'center',
                 justifyContent: 'space-between',
-                gap:'30px'
+                gap:'30px',
             }
     const resultButtonStyle = isMobile 
         ?
@@ -78,6 +83,8 @@ export default function ResultBox({isMobile,
         :
             {
                 fontSize: '16px',
+                width: '80%',
+                justifySelf: 'center',
                 padding: '16px 20px',
                 background: `linear-gradient(to bottom, ${dsb_L_D}, ${dsb_R_D})`,
                 color: '#fff'
@@ -86,14 +93,13 @@ export default function ResultBox({isMobile,
     const handleDownloadResult = () => {
         window.open(`http://127.0.0.1:4000/api/downloadResult/?filename=${resultLink}`);
     }
+    
 
     return (
         <section className="result-box-section" style = {resultBoxSectionStyle}>
             <h2 style = {h2Style}>{successResultCaption.caption}</h2>
-            <div className="buttons-container" style={buttonsContainerStyle}>
-                <button className="result-button" style = {resultButtonStyle} onClick={handleDownloadResult}> Download </button>
-                <button className="result-button" style = {resultButtonStyle} >Share</button>
-            </div>
+            <button className="result-button" style = {resultButtonStyle} onClick={handleDownloadResult}> Download </button>
+            <ShareBox isMobile = {false} resultLink = {`http://127.0.0.1:4000/api/downloadResult/?filename=${resultLink}`}/>
         </section>
     )
 }

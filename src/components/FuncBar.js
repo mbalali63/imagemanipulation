@@ -1,5 +1,8 @@
 import UploadBar from "./UploadBar"
 import SizeInputBox from "./SizeInputBox"
+import AngleInputBox from "./AngleInputBox"
+import FormatInputBox from "./FormatInputBox"
+import FilterInputBox from "./FilterInputBox"
 import ResultBox from "./ResultBox"
 
 export default function FuncBar({isMobile, 
@@ -11,6 +14,12 @@ export default function FuncBar({isMobile,
                                  processStageDefine,
                                  newSize,
                                  handleNewSize,
+                                 rotationAngle,
+                                 handleNewRotationANgle,
+                                 newFormat,
+                                 handleNewFormat,
+                                 newFilter,
+                                 handleNewFilter,
                                  resultLink,
                                  updateResultLink
                                 })
@@ -69,7 +78,7 @@ export default function FuncBar({isMobile,
                     processStage = {processStage} 
                     processHandler = {processHandler} 
             />
-            <SizeInputBox 
+{            (functionMode === 'resize') && <SizeInputBox 
                     isMobile = {isMobile} 
                     functionMode = {functionMode} 
                     selectedFile = {selectedFile} 
@@ -81,6 +90,46 @@ export default function FuncBar({isMobile,
                     resultLink = {resultLink}
                     updateResultLink = {updateResultLink}
             />
+}            
+{            (functionMode === 'rotate') && <AngleInputBox 
+                    isMobile = {isMobile} 
+                    functionMode = {functionMode} 
+                    selectedFile = {selectedFile} 
+                    processStage = {processStage} 
+                    processHandler = {processHandler} 
+                    processStageDefine = {processStageDefine}
+                    rotationAngle = {rotationAngle}
+                    handleNewRotationANgle = {handleNewRotationANgle}
+                    resultLink = {resultLink}
+                    updateResultLink = {updateResultLink}
+            />
+}
+{            (functionMode === 'format') && <FormatInputBox 
+                    isMobile = {isMobile} 
+                    functionMode = {functionMode} 
+                    selectedFile = {selectedFile} 
+                    processStage = {processStage} 
+                    processHandler = {processHandler} 
+                    processStageDefine = {processStageDefine}
+                    newFormat = {newFormat}
+                    handleNewFormat = {handleNewFormat}
+                    resultLink = {resultLink}
+                    updateResultLink = {updateResultLink}
+            />
+}
+{            (functionMode === 'filter') && <FilterInputBox 
+                    isMobile = {isMobile} 
+                    functionMode = {functionMode} 
+                    selectedFile = {selectedFile} 
+                    processStage = {processStage} 
+                    processHandler = {processHandler} 
+                    processStageDefine = {processStageDefine}
+                    newFilter = {newFilter}
+                    handleNewFilter = {handleNewFilter}
+                    resultLink = {resultLink}
+                    updateResultLink = {updateResultLink}
+            />
+}
             <ResultBox 
                     isMobile = {isMobile} 
                     functionMode = {functionMode} 

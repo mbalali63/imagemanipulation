@@ -2,19 +2,19 @@ import { setSelectionRange } from '@testing-library/user-event/dist/utils/index.
 import {fcbb_L_D,fcbb_R_D} from './../colors.js'
 import {fcbb_L_M,fcbb_R_M} from './../colors.js'
 
-export default function SizeInputBox({isMobile,
+export default function FormatInputBox({isMobile,
                                       functionMode,
                                       selectedFile,
                                       processStage,
                                       processHandler,
                                       processStageDefine,
-                                      newSize,
-                                      handleNewSize,
+                                      newFilter,
+                                      handleNewFilter,
                                       resultLink,
                                       updateResultLink
                                     })
 {
-    const sizeInputBoxSectionStyle = isMobile 
+    const filterInputBoxSectionStyle = isMobile 
     ?
         {
             display: processStage === 'getData' ? 'flex' : 'none',
@@ -52,29 +52,31 @@ export default function SizeInputBox({isMobile,
                 fontSize: '25px',
                 fontWeight:'400'
             }
-    const sizeInputContainerStyle = isMobile
+    const filterInputContainerStyle = isMobile
         ?
             {
                 width:'100%',
                 display:'flex',
-                flexDirection: 'row',
+                flexDirection: 'column',
                 alignItems: 'center',
                 justifyContent: 'center',
                 gap:'20px'
+
             }
         :
             {
-                width:'60%',
-                display:'flex',
-                flexDirection: 'row',
-                alignItems: 'center',
-                justifyContent: 'space-between',
+                width:'100%',
+                display:'grid',
+                gridTemplateColumns: 'repeat(2,1fr)',
+                justifyItems: 'center',
                 gap:'33px',                
             }
-    const sizeInputBoxStyle = {
+    const filterInputBoxStyle = {
         width: '30%',
-        padding: '10px 20px'
+        padding: '10px 20px',
+        border:'1px solid green'
     }
+    
     const buttonStyle = isMobile 
         ?
             {
@@ -94,26 +96,16 @@ export default function SizeInputBox({isMobile,
                 fontSize: '20px',
                 fontWeight:'400'
             }
-    const handleSizeInputValueChange = (e) => {
-        if (isNaN(Number(e.target.value))) {
-            console.error(`${e.target.value} is not a valid numerical value`)
-        } else {
-            if (e.target.id === 'right-box') {                
-                handleNewSize(newSize[0],parseInt(e.target.value));
-            } else if (e.target.id === 'left-box') {
-                handleNewSize(parseInt(e.target.value),newSize[1]);
-            }
-        }
-
+    const handleFilterInputValueChange = (e) => {
+        handleNewFilter(e.target.id);
     }
     const convertHandler = () => {
         const imageDataPack = {
             imageName: selectedFile.name,
-            newSizeX: newSize[0],
-            newSizeY: newSize[1]
+            format: newFilter,
         }
         try {
-            const response = fetch('http://127.0.0.1:4000/api/newsize',{
+            const response = fetch('http://127.0.0.1:4000/addFilter',{
                 method: "POST",
                 headers: {
                     'Content-Type': 'application/json'
@@ -132,7 +124,7 @@ export default function SizeInputBox({isMobile,
                 }
             })
         } catch (err) {
-            console.log('Size Change Failed.');
+            console.log('Image filter adding Failed.');
         }
     }
     const resetHandler = () => {
@@ -168,28 +160,46 @@ export default function SizeInputBox({isMobile,
                     justifyContent: 'center',
                     gap: '10px'
                 }
-    return (
-        <section className = "size-input-box-section" style = {sizeInputBoxSectionStyle}>
-            <div className='h2-reset-container' style={h2ResetContainerStyle}>
-                <h2 style = {h2Style}>Enter the size</h2>
-                {isMobile && <button className="reset-btn" style={resetBtnStyle} onClick={resetHandler}>Upload another image</button>}
+    const filterInputBoxLabelStyle = isMobile 
+            ?
+                {}
+            :
+                {
+                }
+    const filterListItemContainerStyle = isMobile
+            ?
+                {
+                    width: '80%',
+                }
+            :
+                {
+                    width:'80%',
+                }
+
+    const rawFiltersList = ['blur','gamma','negate','normalise','convolve','linear'];
+    const filterListItemContainer = rawFiltersList.map( (item) => {
+        return (
+            <div className = 'filterListItemContainer' style = {filterListItemContainerStyle}>
+                <input
+                    type = "radio"
+                    name = "new-filter"
+                    className = "filter-input-box"
+                    id={item}
+                    style = {filterInputBoxStyle}
+                    onChange={(e) => handleFilterInputValueChange(e)}
+                />
+                <label htmlFor={item} style = {filterInputBoxLabelStyle} > {item} </label>
             </div>
-            <div className = "size-input-container" style = {sizeInputContainerStyle}>
-                <input 
-                    type = "text"
-                    className = "size-input-box" 
-                    id="left-box" 
-                    style = {sizeInputBoxStyle} 
-                    onChange={(e) => handleSizeInputValueChange(e)}
-                />
-                <p style = {pStyle}>by</p>
-                <input 
-                    type = "text"
-                    className = "size-input-box" 
-                    id="right-box" 
-                    style = {sizeInputBoxStyle}
-                    onChange={(e) => handleSizeInputValueChange(e)}
-                />
+        )
+    })
+    return (
+        <section className = "filter-input-box-section" style = {filterInputBoxSectionStyle}>
+            <div className='h2-reset-container' style={h2ResetContainerStyle}>
+                <h2 style = {h2Style}>Select the new filter</h2>
+                <button className="reset-btn" style={resetBtnStyle} onClick={resetHandler}>Upload another image</button>
+            </div>
+            <div className = "filter-input-container" style = {filterInputContainerStyle}>
+                {filterListItemContainer}
             </div>
             <button className = "convert-button" style = {buttonStyle} onClick={(e) => convertHandler(e)} >Convert</button>
         </section>

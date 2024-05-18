@@ -11,6 +11,9 @@ function App() {
   const isMobile = useMediaQuery({query: '(max-width:400px)'});
   const [processStage,setProcessStage] = useState('initialize');  //initialize, getData, result
   const [newSize,setNewSize] = useState([0,0]);
+  const [rotationAngle,setRotationAngle] = useState(0);
+  const [newFormat,setNewFormat] = useState('jpg');
+  const [newFilter,setNewFilter] = useState(null);
   const [selectedFile,setSelectedFile] = useState(null);
   const [resultLink, setResultLink] = useState(null);
   const refTarget = useRef(null);
@@ -56,6 +59,9 @@ function App() {
     setNewSize([x,y]);
   }
 
+  const handleNewRotationANgle = (angle) => {
+    setRotationAngle(angle);
+  }
   const updateResultLink = (downloadLink) => {
     setResultLink(downloadLink);
   }
@@ -64,6 +70,13 @@ function App() {
     setFunctionMode(mode);
   }
 
+  const handleNewFormat = (format) => {
+    setNewFormat(format);
+  }
+
+  const handleNewFilter = (filter) => {
+    setNewFilter(filter);
+  }
   return (
     <div className="App">
       <Header
@@ -89,6 +102,12 @@ function App() {
               processStageDefine = {processStageDefine}
               newSize={newSize} 
               handleNewSize = {handleNewSize}
+              rotationAngle={rotationAngle} 
+              handleNewRotationANgle = {handleNewRotationANgle}
+              newFormat = {newFormat}
+              handleNewFormat = {handleNewFormat}
+              newFilter = {newFilter}
+              handleNewFilter = {handleNewFilter}
               resultLink = {resultLink}
               updateResultLink = {updateResultLink}
       />
